@@ -81,19 +81,19 @@ function initiateApp(){
  * 		       - Note: This is a custom attribute you will create in order to store the image path
  *                     which is being used for the background image. You are doing this so when you
  *                     need to update the image in the modal, you can easily retrieve the image path!
- *         - Give the `figure` element a background image:
+ *         - Also, Give the `figure` element a background image:
  *           - Hint: the path for the background image should be the path in the image array
  *             which corresponds to the current index of the loop
  *           - Hint: the jQuery .css() method can be very helpful here!
- *       - a `figureCaption` element with text in it:
+ *       - a `figcaption` element with text in it:
  * 			 - the text should be the name of the image which is in the path, but only the image name.
  *             - Example image 'images/landscape-1.jpg'
  *             - Example Title 'landscape-1'
  *           - Hint: The .slice() and .indexOf() methods can be very useful
  *                   as you need to select and save only a part of the paths to get
  *                   title from the path
- *    - Append the `figure` and `figureCaption` elements into the correct HTML structure
- *      - the `figureCaption` is a child of the `figure`
+ *    - Append the `figure` and `figcaption` elements into the correct HTML structure
+ *      - the `figcaption` is a child of the `figure`
  *    - Add a click handler to the `figure` element which calls the `displayImage` function on click.
  *    - Append the completed HTML structure to the `section` element with the id of `gallery`
  *
@@ -101,7 +101,7 @@ function initiateApp(){
  *   - How do you use .css() to set the background image property for the `figure` element?
  *     - https://www.w3schools.com/jquery/jquery_css.asp
  *   - How do you use .slice() to select a piece of the path strings and store it to use as the
- *     `figureCaption?
+ *     `figcaption?
  *     - https://www.w3schools.com/jsref/jsref_slice_string.asp
  *   - How do you use indexOf to find where to use .slice()?
  *     - https://www.w3schools.com/jsref/jsref_indexof.asp
@@ -167,7 +167,7 @@ function addModalCloseHandler(){
  *   - Store this title string in variable named `imageTitle`
  * - Use jQuery to select the `h4` with the class of `modal-title` and update the text to match the
  *   string which is stored in the `imageTitle` variable.
- * - Use jQuery to select the `img` tag with the id of `modal-image` and set the `src` of the `img` tag to the
+ * - Use jQuery to select the `img` tag with the id of `modalImage` and set the `src` of the `img` tag to the
  *   to the path stored in the `imagePath` variable.
  * - Use jQuery to select the div with the id of `galleryModal` and call the .modal() method
  *   with the proper argument to open the modal.
@@ -176,6 +176,7 @@ function addModalCloseHandler(){
  *   - https://www.w3schools.com/jquery/html_attr.asp
  * - How do you use .slice() to get the image title?
  *   - w3schools.com/jsref/jsref_slice_string.asp
+ *   - This is the same thing you did in the `makeGallery` function.
  * - What argument do you have to pass to the .modal() method to open it?
  *   - https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp (Check the Modal Methods section)
  */
