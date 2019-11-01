@@ -48,8 +48,10 @@ var pictures = [
  **/
 
 function initiateApp(){
-	/*advanced: add jquery sortable call here to allow resorting of the images
+	/*BONUS FUNCTIONALITY: add jquery sortable call here to allow resorting of the images
 		//on change, rebuild the images array into the newly sorted order
+		Documentation: http://api.jqueryui.com/sortable/
+		Example or sorting in action: https://jqueryui.com/sortable/
 	*/
 	makeGallery(pictures);
 	addModalCloseHandler();
