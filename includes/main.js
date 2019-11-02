@@ -55,7 +55,6 @@ function initiateApp(){
 	*/
 	makeGallery(pictures);
 	addModalCloseHandler();
-	$('#gallery').sortable();
 }
 
 	/**
