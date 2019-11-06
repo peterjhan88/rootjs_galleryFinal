@@ -53,8 +53,17 @@ function initiateApp(){
 		Documentation: http://api.jqueryui.com/sortable/
 		Example or sorting in action: https://jqueryui.com/sortable/
 	*/
-	makeGallery(pictures);
+	// localStorage.getItem("userPictureOrder") will return null if the file DNE
+	var checkStoredOrderExist = localStorage.getItem("userPictureOrder") === null;
+	if(checkStoredOrderExist){
+		makeGallery(pictures);
+	} else {
+		loadUserPictureOrder();
+	}
 	addModalCloseHandler();
+	$('#saveOrderButton').click(saveUserPictureOrder);
+	$('#loadOrderButton').click(loadUserPictureOrder);
+	$('#resetButton').click(resetPictureOrder);
 }
 
 	/**
@@ -111,8 +120,26 @@ function initiateApp(){
  **/
 
 function makeGallery(imageArray){
+	var newGallery = $('<section>').attr('id','gallery');
 
+	for(var index=0; index<imageArray.length;index++){
+		var figure = $('<figure>').addClass('imageGallery col-xs-12 col-sm-6 col-md-4')
+		var imgPath = imageArray[index];
+		var slicingIndex = imgPath.indexOf('/')+1;
+		// figure.attr('style', 'background-image:url('+imgPath+');'); //success
+		// figure.style('background-image','url('+imgPath+')'); // fail
+		// figure.css('background-image', 'url('+imgPath+');'); // fail
+		figure.css({
+			'background-image': 'url('+imgPath+')'
+		});
+		var figcaption = $('<figcaption>').text(imgPath.slice(slicingIndex));
+		figure.append(figcaption);
+		figure.click(displayImage);
+		newGallery.append(figure);
 	}
+	$('#gallery').replaceWith(newGallery);
+	makeGallerySortable();
+}
 
 	/**
  * addModalCloseHandler
@@ -140,7 +167,9 @@ function makeGallery(imageArray){
  */
 
 function addModalCloseHandler(){
-
+	$('#modalImage').click(function(){
+		$('#galleryModal').modal('hide');
+	});
 }
 
 /**
@@ -181,6 +210,57 @@ function addModalCloseHandler(){
  *   - https://www.w3schools.com/bootstrap/bootstrap_ref_js_modal.asp (Check the Modal Methods section)
  */
 
-function displayImage(){
+function displayImage(event){
+	var selectedElement = $(event.currentTarget);
+	var imagePath = selectedElement.attr('style');
+	var sliceStart = imagePath.indexOf('(')+1;
+	var sliceEnd = imagePath.indexOf('\)')-2;
+	imagePath = imagePath.replace(/"/gi,"");
+	imagePath = imagePath.slice(sliceStart,sliceEnd);
+	
+	sliceStart = imagePath.indexOf('/')+1;
+	sliceEnd = imagePath.indexOf('.');
+	var imageTitle = imagePath.slice(sliceStart,sliceEnd);
+	$('h4.modal-title').text(imageTitle);
+	$('#modalImage').attr('src',imagePath);
+	$('#galleryModal').modal('show');
+}
 
+
+// Make image sorable
+function makeGallerySortable(){
+	$('#gallery').sortable();
+}
+
+// Save image order in local storage
+function saveUserPictureOrder(){
+	var currentFigures = $('#gallery figure')
+	var customOrderedImagePath = [];
+	for(var index=0; index<currentFigures.length; index++){
+		var imagePath = currentFigures[index].style.backgroundImage;
+		var sliceStart = imagePath.indexOf('(')+1;
+		var sliceEnd = imagePath.indexOf(')');
+		imagePath = imagePath.slice(sliceStart,sliceEnd);
+		customOrderedImagePath.push(imagePath);
+	}
+	localStorage.setItem("userPictureOrder", customOrderedImagePath);
+}
+
+// Load userPictureOrder stored in local
+function loadUserPictureOrder(){
+	// getting locally stored user picture order
+	var userPicOrderString = localStorage.getItem("userPictureOrder");
+
+	// Get entire picture locations in single string with double quotation mark(")
+	// Replacing all " with empty string
+	userPicOrderString = userPicOrderString.replace(/"/gi,"");
+	
+	// require split-up by ','
+	var userPicOrderArray = userPicOrderString.split(",");
+	makeGallery(userPicOrderArray);
+}
+
+// Rest Picture Order
+function resetPictureOrder(){
+	makeGallery(pictures);
 }
